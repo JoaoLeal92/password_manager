@@ -1,10 +1,10 @@
 from tkinter import *
 from tkinter import ttk
 
-# from db import create_connection
 from password_hash_provider import PasswordHashProvider
 from settings import USER_DB
-from models.users import UserDatabase
+from models.repositories.users_repository import UserDatabase
+
 
 class SampleApp(Tk):
     def __init__(self):
@@ -36,7 +36,6 @@ class SampleApp(Tk):
 class Application(Frame):
     def __init__(self, master=None):
         # Connects to the database
-        # self.conn = create_connection(USER_DB)
         self.conn = UserDatabase('SQLITE', dbname=USER_DB)
 
         # Creates the hash provider instance
@@ -79,7 +78,7 @@ class Application(Frame):
         self.password_container.pack()
         # Password input and label
         self.password_label = Label(self.password_container, text='Senha', width=10)
-        self.password_input = Entry(self.password_container)
+        self.password_input = Entry(self.password_container, show="*")
         self.password_label.pack(side=LEFT)
         self.password_input.pack()
 
@@ -93,8 +92,17 @@ class Application(Frame):
         self.submit_button['command'] = lambda: self.login(master)
         self.submit_button.pack()
 
+        # Login message container
+        self.login_message_container = Frame(self.tab1)
+        self.login_message_container['pady'] = 10
+        self.login_message_container['padx'] = 10
+        self.login_message_container.pack()
+        # Login message
+        self.login_message = Label(self.login_message_container, text='')
+        self.login_message.pack()
+
         # REGISTER SCREEN -----------------------------------------
-                # Header container
+        # Header container
         self.register_header_container = Frame(self.tab2)
         self.register_header_container.pack()
         self.register_header_container['pady'] = 10
@@ -108,7 +116,7 @@ class Application(Frame):
         self.register_user_container['padx'] = 10
         self.register_user_container.pack()
         # User name input and label
-        self.register_user_label = Label(self.register_user_container, text='Usuário', width=10)
+        self.register_user_label = Label(self.register_user_container, text='Usuário', width=20)
         self.register_user_input = Entry(self.register_user_container)
         self.register_user_label.pack(side=LEFT)
         self.register_user_input.pack()
@@ -119,8 +127,8 @@ class Application(Frame):
         self.register_password_container['padx'] = 10
         self.register_password_container.pack()
         # Password input and label
-        self.register_password_label = Label(self.register_password_container, text='Senha', width=10)
-        self.register_password_input = Entry(self.register_password_container)
+        self.register_password_label = Label(self.register_password_container, text='Senha', width=20)
+        self.register_password_input = Entry(self.register_password_container, show="*")
         self.register_password_label.pack(side=LEFT)
         self.register_password_input.pack()
 
@@ -130,12 +138,12 @@ class Application(Frame):
         self.register_confirm_password_container['padx'] = 10
         self.register_confirm_password_container.pack()
         # Password input and label
-        self.register_confirm_password_label = Label(self.register_confirm_password_container, text='Confirmar senha', width=10)
-        self.register_confirm_password_input = Entry(self.register_confirm_password_container)
+        self.register_confirm_password_label = Label(self.register_confirm_password_container, text='Confirmar senha', width=20)
+        self.register_confirm_password_input = Entry(self.register_confirm_password_container, show="*")
         self.register_confirm_password_label.pack(side=LEFT)
         self.register_confirm_password_input.pack()
 
-        # Submit button
+        # Submit button container
         self.register_submit_container = Frame(self.tab2)
         self.register_submit_container.pack()
         self.register_submit_container['pady'] = 10
@@ -145,27 +153,47 @@ class Application(Frame):
         self.register_submit_button['command'] = self.register
         self.register_submit_button.pack()
 
+        # Register message container
+        self.register_message_container = Frame(self.tab2)
+        self.register_message_container['pady'] = 10
+        self.register_message_container['padx'] = 10
+        self.register_message_container.pack()
+        # Register message
+        self.register_message = Label(self.register_message_container, text='')
+        self.register_message.pack()
+
     def login(self, master):
         user = self.user_input.get()
         password = self.password_input.get()
 
-        if user == 'teste' and password == 'teste':
-            print('logou')
+        user = self.conn.get_user_by_name(username=user)
+
+        if not user:
+            self.login_message['text'] = 'User not found'
+            return
+
+        check_password_match = self.hash_provider.check_encrypted_password(password=password, hashed=user.password)
+
+        if check_password_match:
             master.switch_frame(PasswordPage)
-    
+        else:
+            self.login_message['text'] = 'Wrong user password'
+
     def register(self):
-        print('cadastro')
         # Check if password matches confirmation
+        username = self.register_user_input.get()
         password = self.register_password_input.get()
         confirm_password = self.register_confirm_password_input.get()
         if password != confirm_password:
-            print('Senha e confirmação não batem')
+            self.register_message['text'] = 'Password and password confirmation don\'t match'
             return None
 
         # Creates the password hash
         hashed_password = self.hash_provider.encrypt_password(password)
 
         # Stores hash in database
+        create_user_message = self.conn.create_user(username=username, password=hashed_password)
+        self.register_message['text'] = create_user_message
 
 
 class PasswordPage(Frame):
