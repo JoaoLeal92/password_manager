@@ -1,12 +1,16 @@
 from tkinter import *
 from tkinter import ttk
 
-from password_hash_provider import PasswordHashProvider
 from settings import USER_DB
 from models.repositories.users_repository import UserDatabase
 
+import sys
+sys.path.append("..")
 
-class SampleApp(Tk):
+from providers.password_hash_provider import PasswordHashProvider
+
+
+class PasswordManagerApp(Tk):
     def __init__(self):
         Tk.__init__(self)
         self.current_frames = []
