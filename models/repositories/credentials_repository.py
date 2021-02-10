@@ -3,9 +3,10 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import create_database, database_exists
 
 import sys
-sys.path.append("..") 
 
-from ..entities.Users import Base, User
+sys.path.append("..")
+
+from ..entities.Credentials import Base, Credential
 
 # Global Variables
 SQLITE = 'sqlite'
@@ -14,7 +15,7 @@ SQLITE = 'sqlite'
 USERS = 'users'
 
 
-class UserDatabase:
+class CredentialsDatabase:
     # Instantiate reference object for supported dbs
     DB_ENGINE = {
         SQLITE: 'sqlite:///{DB}'
@@ -32,43 +33,43 @@ class UserDatabase:
             # Creates database, if it doesn't exists
             if not database_exists(engine_url):
                 create_database(engine_url)
-                print('Created "users" database')
+                print('Created "Credentials" database')
 
             # Creates users table if it doesn't exists
-            if not self.db_engine.has_table('users'):
+            if not self.db_engine.has_table('credentials'):
                 try:
                     Base.metadata.create_all(bind=self.db_engine)
-                    print('Created "users" table')
+                    print('Created "credentials" table')
                 except Exception as e:
-                    print('Error during creation of "users" table')
+                    print('Error during creation of "credentials" table')
                     print(e)
-            
+
             print(self.db_engine)
         else:
             print("DBType is not found in DB_ENGINE")
 
-    def create_user(self, username: str, password: str,):
-        # Checks if user already exists on database
-        check_user = self.get_user_by_name(username=username)
-        if check_user:
-            return 'User already exists'
+    def create_credential(self, credential_name: str, credential_url: str, credential_password: str):
+        # Checks if credential already exists on database
+        check_credential = self.get_credential_by_name(credential_name=credential_name)
+        if check_credential:
+            return 'Credential already exists'
 
-        new_user = User(username=username, password=password)
+        new_credential = Credential(name=credential_name, url=credential_url, password=credential_password)
 
         session = self.Session()
 
-        session.add(new_user)
+        session.add(new_credential)
         session.commit()
 
         session.close()
 
-        return 'User created successfuly'
+        return 'Credential created successfuly'
 
-    def get_user_by_name(self, username):
+    def get_credential_by_name(self, credential_name):
         session = self.Session()
 
-        user = session.query(User).filter_by(username=username).first()
+        credential = session.query(Credential).filter_by(name=credential_name).first()
 
         session.close()
 
-        return user
+        return credential
