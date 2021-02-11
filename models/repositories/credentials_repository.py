@@ -51,6 +51,7 @@ class CredentialsDatabase:
     def create_credential(self, credential_name: str, credential_url: str, credential_password: str):
         # Checks if credential already exists on database
         check_credential = self.get_credential_by_name(credential_name=credential_name)
+        print(check_credential)
         if check_credential:
             return 'Credential already exists'
 

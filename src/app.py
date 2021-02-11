@@ -20,9 +20,12 @@ class PasswordManagerApp(Tk):
         self.current_frames = self.winfo_children()
         self._frame.pack()
     
-    def switch_frame(self, frame_class):
+    def switch_frame(self, frame_class, password=None):
         """Destroys current frame and replaces it with a new one."""
-        new_frame = frame_class(self)
+        if password:
+            new_frame = frame_class(master=self, master_password=password)
+        else:
+            new_frame = frame_class(self)
 
         for child in self.winfo_children():
             if child in self.current_frames:

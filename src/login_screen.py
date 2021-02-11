@@ -154,7 +154,7 @@ class LoginPage(Frame):
         check_password_match = self.hash_provider.check_encrypted_password(password=password, hashed=user.password)
 
         if check_password_match:
-            master.switch_frame(PasswordPage)
+            master.switch_frame(PasswordPage, password=password)
         else:
             self.login_message['text'] = 'Wrong user password'
 

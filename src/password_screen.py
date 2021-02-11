@@ -1,20 +1,20 @@
 from tkinter import ttk, Frame, Label, Entry, Button, LEFT
 from models.repositories.credentials_repository import CredentialsDatabase
-from settings import CREDENTIALS_DB
+from settings import CREDENTIALS_DB, SALT
 
 import sys
 sys.path.append("..")
 
-from providers.password_hash_provider import PasswordHashProvider
+from providers.password_encrypt_provider import PasswordEncryptProvider
 
 
 class PasswordPage(Frame):
-    def __init__(self, master=None):
+    def __init__(self, master_password, master=None):
         # Connects to the database
         self.conn = CredentialsDatabase('SQLITE', dbname=CREDENTIALS_DB)
 
         # Creates the hash provider instance
-        self.hash_provider = PasswordHashProvider()
+        self.encrypt_provider = PasswordEncryptProvider(SALT, master_password)
 
         Frame.__init__(self, master)
 
@@ -111,11 +111,13 @@ class PasswordPage(Frame):
             self.register_message['text'] = 'Password and password confirmation don\'t match'
             return None
 
-        # Creates the password hash
-        hashed_password = self.hash_provider.encrypt_password(credential_password)
+        # Encrypts password
+        encrypted_password = self.encrypt_provider.encrypt_password(credential_password)
+        print(encrypted_password)
 
-        # Stores hash in database
-        create_create_credential_message = self.conn.create_credential(credential_name=credential_name,
-                                                                       credential_password=hashed_password,
-                                                                       credential_url=credential_url)
-        self.register_message['text'] = create_create_credential_message
+        # Stores encrypted password in database
+        register_message = self.conn.create_credential(credential_name=credential_name,
+                                                       credential_password=encrypted_password,
+                                                       credential_url=credential_url)
+
+        self.register_message['text'] = register_message
