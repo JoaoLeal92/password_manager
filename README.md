@@ -2,6 +2,21 @@
 
 This module contains a personal password manager in Python
 
+Initial screen<br>
+![Screenshot from 2021-02-15 13-27-18](https://user-images.githubusercontent.com/59267157/107972949-5a40bd80-6f93-11eb-9bd1-cfd41123d1df.png)
+
+Create user screen<br>
+![Screenshot from 2021-02-15 13-27-27](https://user-images.githubusercontent.com/59267157/107972954-5b71ea80-6f93-11eb-91a1-48e6469a2e6b.png)
+
+Create credential screen<br>
+![Screenshot from 2021-02-15 13-27-58](https://user-images.githubusercontent.com/59267157/107972956-5b71ea80-6f93-11eb-8fce-d1ba76a9c7c9.png)
+
+Registered credentials screen (with encrypted passwords)<br>
+![Screenshot from 2021-02-15 13-28-00](https://user-images.githubusercontent.com/59267157/107972959-5c0a8100-6f93-11eb-9f73-198686469185.png)
+
+Registered credentials screen (with decrypted passwords)<br>
+![Screenshot from 2021-02-15 13-28-04](https://user-images.githubusercontent.com/59267157/107972961-5c0a8100-6f93-11eb-9762-da6c38818b64.png)
+
 # INSTALLATION
 
 This password manager was developed using anaconda environments. 
