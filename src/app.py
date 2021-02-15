@@ -18,6 +18,7 @@ class PasswordManagerApp(Tk):
         new_frame = frame_class(self)
         self._frame = new_frame
         self.current_frames = self.winfo_children()
+        self.winfo_toplevel().title("Password Manager")
         self._frame.pack()
     
     def switch_frame(self, frame_class, password=None, username=None):
