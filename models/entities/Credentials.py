@@ -8,6 +8,7 @@ class Credential(Base):
     __tablename__ = 'credentials'
 
     id = Column('id', Integer, primary_key=True)
+    username = Column('username', String)
     name = Column('name', String)
     url = Column('url', String, nullable=True)
     password = Column('password', String)

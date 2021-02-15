@@ -9,10 +9,10 @@ from providers.password_encrypt_provider import PasswordEncryptProvider
 
 
 class PasswordPage(Frame):
-    def __init__(self, master_password, master=None):
+    def __init__(self, master_password, username, master=None):
         # Connects to the database
         self.conn = CredentialsDatabase('SQLITE', dbname=CREDENTIALS_DB)
-        self.credentials_list = self.get_registered_credentials()
+        self.credentials_list = self.get_registered_credentials(username=username)
 
         # Creates the hash provider instance
         self.encrypt_provider = PasswordEncryptProvider(SALT, master_password)
@@ -91,7 +91,7 @@ class PasswordPage(Frame):
         # Submit button
         self.register_submit_button = Button(self.register_submit_container)
         self.register_submit_button['text'] = 'Cadastrar credencial'
-        self.register_submit_button['command'] = self.register_credential
+        self.register_submit_button['command'] = lambda: self.register_credential(username=username)
         self.register_submit_button.pack()
 
         # Register message container
@@ -176,7 +176,7 @@ class PasswordPage(Frame):
         # switch the heading so it will sort in the opposite direction
         tree.heading(col, command=lambda col=col: self.sortby(tree, col, int(not descending)))
 
-    def register_credential(self):
+    def register_credential(self, username):
         credential_name = self.register_credential_name_input.get()
         credential_url = self.register_credential_url_input.get()
         credential_password = self.register_credential_password_input.get()
@@ -190,7 +190,8 @@ class PasswordPage(Frame):
         encrypted_password = self.encrypt_provider.encrypt_password(credential_password)
 
         # Stores encrypted password in database
-        new_credential = self.conn.create_credential(credential_name=credential_name,
+        new_credential = self.conn.create_credential(username=username,
+                                                     credential_name=credential_name,
                                                      credential_password=encrypted_password,
                                                      credential_url=credential_url)
 
@@ -202,8 +203,8 @@ class PasswordPage(Frame):
         self.credentials_list.append(new_credential)
         self._build_tree()
 
-    def get_registered_credentials(self):
-        credentials_list = self.conn.get_all_credentials()
+    def get_registered_credentials(self, username):
+        credentials_list = self.conn.get_all_credentials(username=username)
 
         return credentials_list
 

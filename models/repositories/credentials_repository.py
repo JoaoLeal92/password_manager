@@ -46,7 +46,7 @@ class CredentialsDatabase:
         else:
             print("DBType is not found in DB_ENGINE")
 
-    def create_credential(self, credential_name: str, credential_url: str, credential_password: str):
+    def create_credential(self, username: str, credential_name: str, credential_url: str, credential_password: str):
         # Checks if credential already exists on database
         check_credential = self.get_credential_by_name(credential_name=credential_name)
         if check_credential:
@@ -54,7 +54,7 @@ class CredentialsDatabase:
         # if check_credential:
         #     return 'Credential already exists'
 
-        new_credential = Credential(name=credential_name, url=credential_url, password=credential_password)
+        new_credential = Credential(username=username, name=credential_name, url=credential_url, password=credential_password)
 
         session = self.Session(expire_on_commit=False)
 
@@ -74,10 +74,10 @@ class CredentialsDatabase:
 
         return credential
 
-    def get_all_credentials(self):
+    def get_all_credentials(self, username):
         session = self.Session()
 
-        credentials = session.query(Credential).all()
+        credentials = session.query(Credential).filter_by(username=username).all()
 
         session.close()
 
