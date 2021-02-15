@@ -1,0 +1,30 @@
+anyjson==0.3.3
+argon2-cffi==19.1.0
+arrow @ file:///tmp/build/80754af9/arrow_1599270375481/work
+astroid @ file:///tmp/build/80754af9/astroid_1592495912941/work
+Babel @ file:///tmp/build/80754af9/babel_1607110387436/work
+bcrypt @ file:///tmp/build/80754af9/bcrypt_1597936221426/work
+certifi==2020.12.5
+cffi @ file:///tmp/build/80754af9/cffi_1606255081583/work
+click @ file:///home/linux1/recipes/ci/click_1610990599742/work
+colour==0.1.5
+cryptography @ file:///tmp/build/80754af9/cryptography_1607635341180/work
+furl==2.1.0
+infinity==1.5
+intervals==0.9.0
+isort @ file:///tmp/build/80754af9/isort_1612243941122/work
+lazy-object-proxy @ file:///tmp/build/80754af9/lazy-object-proxy_1607707356794/work
+mccabe==0.6.1
+orderedmultidict==1.0.1
+passlib==1.7.4
+phonenumbers @ file:///tmp/build/80754af9/phonenumbers_1611780178725/work
+pycparser @ file:///tmp/build/80754af9/pycparser_1594388511720/work
+pylint @ file:///tmp/build/80754af9/pylint_1598623985952/work
+python-dateutil @ file:///home/ktietz/src/ci/python-dateutil_1611928101742/work
+python-dotenv @ file:///home/conda/feedstock_root/build_artifacts/python-dotenv_1603979006023/work
+pytz @ file:///tmp/build/80754af9/pytz_1612215392582/work
+six @ file:///tmp/build/80754af9/six_1605205327372/work
+SQLAlchemy @ file:///tmp/build/80754af9/sqlalchemy_1598374728542/work
+SQLAlchemy-Utils @ file:///tmp/build/80754af9/sqlalchemy-utils_1600554316736/work
+toml @ file:///tmp/build/80754af9/toml_1592853716807/work
+wrapt==1.11.2
