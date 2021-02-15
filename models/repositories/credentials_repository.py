@@ -43,28 +43,27 @@ class CredentialsDatabase:
                 except Exception as e:
                     print('Error during creation of "credentials" table')
                     print(e)
-
-            print(self.db_engine)
         else:
             print("DBType is not found in DB_ENGINE")
 
     def create_credential(self, credential_name: str, credential_url: str, credential_password: str):
         # Checks if credential already exists on database
         check_credential = self.get_credential_by_name(credential_name=credential_name)
-        print(check_credential)
         if check_credential:
-            return 'Credential already exists'
+            return None
+        # if check_credential:
+        #     return 'Credential already exists'
 
         new_credential = Credential(name=credential_name, url=credential_url, password=credential_password)
 
-        session = self.Session()
+        session = self.Session(expire_on_commit=False)
 
         session.add(new_credential)
         session.commit()
 
         session.close()
 
-        return 'Credential created successfuly'
+        return new_credential
 
     def get_credential_by_name(self, credential_name):
         session = self.Session()
@@ -74,3 +73,12 @@ class CredentialsDatabase:
         session.close()
 
         return credential
+
+    def get_all_credentials(self):
+        session = self.Session()
+
+        credentials = session.query(Credential).all()
+
+        session.close()
+
+        return credentials

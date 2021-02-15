@@ -22,4 +22,4 @@ class PasswordEncryptProvider:
 
     def decrypt_password(self, encrypted_password):
         decrypted_password = self.fernet_key.decrypt(encrypted_password)
-        return decrypted_password
+        return decrypted_password.decode()

@@ -42,8 +42,6 @@ class UserDatabase:
                 except Exception as e:
                     print('Error during creation of "users" table')
                     print(e)
-            
-            print(self.db_engine)
         else:
             print("DBType is not found in DB_ENGINE")
 
