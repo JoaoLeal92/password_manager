@@ -5,6 +5,7 @@ from settings import USER_DB
 from models.repositories.users_repository import UserDatabase
 from src.password_screen import PasswordPage
 
+import os
 import sys
 sys.path.append("..")
 
@@ -13,6 +14,10 @@ from providers.password_hash_provider import PasswordHashProvider
 
 class LoginPage(Frame):
     def __init__(self, master=None):
+        # Creates database directory, if there is none
+        if not os.path.isdir(os.path.abspath('./database')):
+            os.mkdir(os.path.abspath('./database'))
+
         # Connects to the database
         self.conn = UserDatabase('SQLITE', dbname=USER_DB)
 
@@ -154,7 +159,7 @@ class LoginPage(Frame):
         check_password_match = self.hash_provider.check_encrypted_password(password=password, hashed=user.password)
 
         if check_password_match:
-            master.switch_frame(PasswordPage, password=password)
+            master.switch_frame(PasswordPage, password=password, username=user.username)
         else:
             self.login_message['text'] = 'Wrong user password'
 
