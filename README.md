@@ -19,21 +19,34 @@ Registered credentials screen (with decrypted passwords)<br>
 
 # INSTALLATION
 
-This password manager was developed using anaconda environments. 
-
-Creating environment
-```ignorelang
-conda env create -f env.yml
-conda activate password_manager
-```
-
 Create a .env file containing the data from .env.example. The database directories should not be changed unless necessary.
 It is also required to generate a salt value (follow instructions on .env.example).
 
+## Setting up the environment
+
+Using anaconda environments:
+```ignorelang
+conda env create -f env.yml
+```
+
+Using pipenv
+```ignorelang
+pip install pipenv
+pipenv install
+```
+
 # Run
 
-To run the application, simply use the command below.
+To run the application, simply use the commands below, depending on whether you are using anaconda or pipenv.
 All required databases and tables will be created under the "database" directory
+
+Using conda:
 ```ignorelang
+conda activate password_manager
 python .
+```
+
+Using pipenv:
+```ignorelang
+pipenv run python .
 ```

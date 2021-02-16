@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+anyjson = "==0.3.3"
+argon2-cffi = "==19.1.0"
+python-dotenv = "*"
+sqlalchemy = "*"
+tk = "*"
+sqlalchemy-utils = "*"
+cryptography = "*"
+passlib = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
